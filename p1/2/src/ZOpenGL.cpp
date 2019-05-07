@@ -1,6 +1,6 @@
 #include "ZOpenGL.hpp"
 
-void ZOpenGL::init(IRenderLoop* iRenderLoop)//void(*onRenderLoop)(GLFWwindow* window)
+void ZOpenGL::init(IRenderLoop* iRenderLoop, int width, int height)
 {
 	GLFWwindow* window;
 
@@ -11,7 +11,7 @@ void ZOpenGL::init(IRenderLoop* iRenderLoop)//void(*onRenderLoop)(GLFWwindow* wi
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// 创建窗口上下文
-	window = glfwCreateWindow(480, 320, "OpenGL Window", NULL, NULL);
+	window = glfwCreateWindow(width, height, "OpenGL Window", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -28,7 +28,9 @@ void ZOpenGL::init(IRenderLoop* iRenderLoop)//void(*onRenderLoop)(GLFWwindow* wi
 	}
 
 	glEnable(GL_DEPTH_TEST);
+	iRenderLoop->setGLFWwindow(window);
 
+	/*
 	// 循环
 	while (!glfwWindowShouldClose(window))
 	{
@@ -42,4 +44,5 @@ void ZOpenGL::init(IRenderLoop* iRenderLoop)//void(*onRenderLoop)(GLFWwindow* wi
 	}
 
 	glfwTerminate();
+	*/
 }

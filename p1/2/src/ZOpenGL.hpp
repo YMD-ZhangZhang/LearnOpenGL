@@ -8,7 +8,7 @@
 class ZOpenGL
 {
 public:
-	static void init(IRenderLoop* iRenderLoop);
+	static void init(IRenderLoop* iRenderLoop, int width, int height);
 };
 
 #endif

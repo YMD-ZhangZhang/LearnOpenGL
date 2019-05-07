@@ -25,6 +25,12 @@
     <Filter Include="源文件\core">
       <UniqueIdentifier>{ef8f1d7b-d8f0-4523-ba4b-66886266fe96}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\demo2">
+      <UniqueIdentifier>{870bd0d6-9233-414f-bbf6-fc8ee4c3dc39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\demo2">
+      <UniqueIdentifier>{6feee567-ff0b-4149-8a1a-eb2fa37418f4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="shader\fs.txt">
@@ -37,6 +43,12 @@
       <Filter>资源文件</Filter>
     </Text>
     <Text Include="shader\vsLight.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="shader\demo2fs.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="shader\demo2vs.txt">
       <Filter>资源文件</Filter>
     </Text>
   </ItemGroup>
@@ -62,6 +74,21 @@
     <ClCompile Include="src\Main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\Demo2.cpp">
+      <Filter>源文件\demo2</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Node.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sprite.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stb_image.h">
@@ -80,6 +107,21 @@
       <Filter>头文件\core</Filter>
     </ClInclude>
     <ClInclude Include="src\IRenderLoop.h">
+      <Filter>头文件\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Demo2.h">
+      <Filter>头文件\demo2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Node.h">
+      <Filter>头文件\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene.h">
+      <Filter>头文件\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine.h">
+      <Filter>头文件\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sprite.h">
       <Filter>头文件\core</Filter>
     </ClInclude>
   </ItemGroup>

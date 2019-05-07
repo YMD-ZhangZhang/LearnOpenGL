@@ -13,7 +13,6 @@ class Demo1 : public IRenderLoop
 {
 public:
 	Demo1();
-	void begin();
 
 private:
 	void onRenderLoop(GLFWwindow* window);
@@ -33,4 +32,3 @@ private:
 };
 
 #endif
-

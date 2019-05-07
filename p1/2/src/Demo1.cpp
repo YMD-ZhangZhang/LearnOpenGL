@@ -5,11 +5,7 @@ Demo1::Demo1()
 	this->init = false;
 	this->vsPath = ".\\shader\\vs.txt";
 	this->fsPath = ".\\shader\\fs.txt";
-}
-
-void Demo1::begin()
-{
-	ZOpenGL::init(this);
+	ZOpenGL::init(this, 480, 320);
 }
 
 void Demo1::onRenderLoop(GLFWwindow * window)
@@ -107,7 +103,7 @@ unsigned int Demo1::createObjVAO(unsigned int boxVBO)
 
 	// VBO
 	glBindBuffer(GL_ARRAY_BUFFER, boxVBO);
-	// VBO add aata 顶点坐标
+	// VBO add data 顶点坐标
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 	// VBO add data 法线
@@ -145,6 +141,7 @@ void Demo1::renderObj(unsigned int objVAO, ZShader * shader)
 	shader->use();
 	glBindVertexArray(objVAO);
 
+	// fragColor = vec4(1.0, 0.0, 0.0, 1.0);
 	// 模型矩阵
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::rotate(model, glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));

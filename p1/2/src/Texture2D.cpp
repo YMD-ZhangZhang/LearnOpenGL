@@ -5,6 +5,7 @@
 
 Texture2D::Texture2D(const char* url)
 {
+	stbi_set_flip_vertically_on_load(true);
 	this->_data = stbi_load(url, &this->_width, &this->_height, &this->_nrChannels, 0);
 	glGenTextures(1, &this->_glTexture);
 }
