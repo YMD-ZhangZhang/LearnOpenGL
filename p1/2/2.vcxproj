@@ -161,6 +161,7 @@
   <ItemGroup>
     <ClCompile Include="src\BaseScene.cpp" />
     <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\core\Material.cpp" />
     <ClCompile Include="src\core\Node3D.cpp" />
     <ClCompile Include="src\core\Transform.cpp" />
     <ClCompile Include="src\Demo1.cpp" />
@@ -182,6 +183,7 @@
   <ItemGroup>
     <ClInclude Include="src\BaseScene.h" />
     <ClInclude Include="src\Camera.h" />
+    <ClInclude Include="src\core\Material.h" />
     <ClInclude Include="src\core\Node3D.h" />
     <ClInclude Include="src\core\Transform.h" />
     <ClInclude Include="src\Demo1.h" />

@@ -2,8 +2,8 @@
 
 #include "Node.h"
 #include "Texture2D.hpp"
-#include "ZShader.hpp"
 #include "Engine.h"
+#include "core/Material.h"
 
 using namespace std;
 
@@ -15,12 +15,11 @@ public:
 	virtual void onRender(Camera* camera);
 
 private:
-	void createShader();
 	void createVBO();
 	void createVAO();
 
 private:
-	ZShader* _shader;
+	Material* _material;
 	Texture2D* _texture;
 	unsigned int _vbo;
 	unsigned int _vao;

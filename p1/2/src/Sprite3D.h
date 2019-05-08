@@ -2,7 +2,7 @@
 
 #include "core/Node3D.h"
 #include "Texture2D.hpp"
-#include "ZShader.hpp"
+#include "core/Material.h"
 #include "Engine.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -18,12 +18,11 @@ public:
 	virtual void onRender(Camera* camera);
 
 private:
-	void createShader();
 	void createVBO();
 	void createVAO();
 
 private:
-	ZShader* _shader;
+	Material* _material;
 	Texture2D* _texture;
 	unsigned int _vbo;
 	unsigned int _vao;

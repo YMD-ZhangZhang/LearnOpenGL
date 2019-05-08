@@ -122,6 +122,9 @@
     <ClCompile Include="src\core\Node3D.cpp">
       <Filter>源文件\core</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\Material.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stb_image.h">
@@ -176,6 +179,9 @@
       <Filter>头文件\core</Filter>
     </ClInclude>
     <ClInclude Include="src\core\Node3D.h">
+      <Filter>头文件\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Material.h">
       <Filter>头文件\core</Filter>
     </ClInclude>
   </ItemGroup>

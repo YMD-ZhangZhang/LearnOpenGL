@@ -2,7 +2,8 @@
 
 Sprite::Sprite()
 {
-	this->createShader();
+	_material = new Material(".\\shader\\demo2vs.txt", ".\\shader\\demo2fs.txt");
+	_material->getShader()->setUniform1i("material.diffuse", 0);
 }
 
 void Sprite::loadTexture(const char * url)
@@ -20,7 +21,7 @@ void Sprite::loadTexture(const char * url)
 void Sprite::onRender(Camera* camera)
 {
 	// 使用shader
-	this->_shader->use();
+	this->_material->getShader()->use();
 
 	// 根据实时位置生成顶点 并提交
 	this->createVBO();
@@ -34,14 +35,6 @@ void Sprite::onRender(Camera* camera)
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 	Node::onRender(camera);
-}
-
-void Sprite::createShader()
-{
-	const char* vsPath = ".\\shader\\demo2vs.txt";
-	const char* fsPath = ".\\shader\\demo2fs.txt";
-	this->_shader = new ZShader(vsPath, fsPath);
-	this->_shader->setUniform1i("material.diffuse", 0);
 }
 
 void Sprite::createVBO()
