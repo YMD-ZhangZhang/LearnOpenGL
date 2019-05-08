@@ -40,9 +40,9 @@ void Engine::onRenderLoop(GLFWwindow * window)
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	for (vector<Scene*>::iterator it = _sceneList.begin(); it != _sceneList.end();)
+	for (vector<BaseScene*>::iterator it = _sceneList.begin(); it != _sceneList.end();)
 	{
-		(*it)->onRender();
+		(*it)->onSceneRender();
 		++it;
 	}
 }
@@ -52,7 +52,7 @@ void Engine::setGLFWwindow(GLFWwindow * window)
 	this->window = window;
 }
 
-void Engine::addScene(Scene * scene)
+void Engine::addScene(BaseScene * scene)
 {
 	_sceneList.push_back(scene);
 }

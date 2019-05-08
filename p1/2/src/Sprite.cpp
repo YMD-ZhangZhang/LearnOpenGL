@@ -17,7 +17,7 @@ void Sprite::loadTexture(const char * url)
 	//_texture->dispose();
 }
 
-void Sprite::onRender()
+void Sprite::onRender(Camera* camera)
 {
 	// 使用shader
 	this->_shader->use();
@@ -33,7 +33,7 @@ void Sprite::onRender()
 	// 绘制
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
-	Node::onRender();
+	Node::onRender(camera);
 }
 
 void Sprite::createShader()
@@ -47,14 +47,14 @@ void Sprite::createShader()
 void Sprite::createVBO()
 {
 	// 坐标系 左上为0,0
-	float screenWidth = Engine::getInstance()->getWidth();
-	float screenHeight = Engine::getInstance()->getHeight();
+	float screenWidth = (float)(Engine::getInstance()->getWidth());
+	float screenHeight = (float)(Engine::getInstance()->getHeight());
 
-	float x = this->getX();
-	float y = this->getY();
+	float x = (float)(this->getX());
+	float y = (float)(this->getY());
 
-	float width = this->getWidth();
-	float height = this->getHeight();
+	float width = (float)(this->getWidth());
+	float height = (float)(this->getHeight());
 
 	// 计算4个点
 	float leftTopX = x / screenWidth * 2 - 1;

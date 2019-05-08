@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Scene.h"
+#include "BaseScene.h"
 #include "IRenderLoop.h"
 #include "ZOpenGL.hpp"
 #include <vector>
@@ -14,7 +14,7 @@ public:
 	static Engine* getInstance();
 	void init(int width, int height);
 	void beginRenderLoop();
-	void addScene(Scene* scene);
+	void addScene(BaseScene* scene);
 	int getWidth();
 	int getHeight();
 
@@ -25,6 +25,6 @@ private:
 private:
 	int _width;
 	int _height;
-	vector<Scene*> _sceneList;
+	vector<BaseScene*> _sceneList;
 	GLFWwindow* window;
 };

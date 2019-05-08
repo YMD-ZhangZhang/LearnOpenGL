@@ -5,7 +5,6 @@ Node::Node()
 	_name = "noname";
 }
 
-
 Node::~Node()
 {
 }
@@ -78,12 +77,12 @@ vector<Node*> Node::getChilds()
 	return _childs;
 }
 
-void Node::onRender()
+void Node::onRender(Camera* camera)
 {
 	//std::cout << "ÕýÔÚäÖÈ¾:" << this->_name << std::endl;
 	for (vector<Node*>::iterator it = _childs.begin(); it != _childs.end();)
 	{
-		(*it)->onRender();
+		(*it)->onRender(camera);
 		++it;
 	}
 }

@@ -6,6 +6,8 @@
 
 using namespace std;
 
+class Camera;
+
 class Node
 {
 public:
@@ -25,7 +27,7 @@ public:
 	void addChild(Node* child);
 	void removeChild(Node* child);
 	vector<Node*> getChilds();
-	virtual void onRender();
+	virtual void onRender(Camera* camera);
 	Node* getParent();
 	void setParent(Node* parent);
 

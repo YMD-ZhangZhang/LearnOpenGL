@@ -31,6 +31,12 @@
     <Filter Include="头文件\demo2">
       <UniqueIdentifier>{6feee567-ff0b-4149-8a1a-eb2fa37418f4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\demos">
+      <UniqueIdentifier>{e2d86543-5454-4a6f-a9c5-c2f192a9154a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\demos">
+      <UniqueIdentifier>{6ae1ab32-eb93-4d9f-80c4-ad8c25cff9d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="shader\fs.txt">
@@ -49,6 +55,12 @@
       <Filter>资源文件</Filter>
     </Text>
     <Text Include="shader\demo2vs.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="shader\d3fs.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="shader\d3vs.txt">
       <Filter>资源文件</Filter>
     </Text>
   </ItemGroup>
@@ -89,6 +101,27 @@
     <ClCompile Include="src\Sprite.cpp">
       <Filter>源文件\core</Filter>
     </ClCompile>
+    <ClCompile Include="src\Sprite3D.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene3D.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Camera.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Demo3.cpp">
+      <Filter>源文件\demos</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseScene.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Transform.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Node3D.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stb_image.h">
@@ -122,6 +155,27 @@
       <Filter>头文件\core</Filter>
     </ClInclude>
     <ClInclude Include="src\Sprite.h">
+      <Filter>头文件\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sprite3D.h">
+      <Filter>头文件\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene3D.h">
+      <Filter>头文件\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Camera.h">
+      <Filter>头文件\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Demo3.h">
+      <Filter>头文件\demos</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseScene.h">
+      <Filter>头文件\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Transform.h">
+      <Filter>头文件\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Node3D.h">
       <Filter>头文件\core</Filter>
     </ClInclude>
   </ItemGroup>

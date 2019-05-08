@@ -45,6 +45,11 @@ void ZShader::setUniform1i(const GLchar * name, GLint v0)
 	glUniform1i(glGetUniformLocation(this->_shaderProgram, name), v0);
 }
 
+void ZShader::setUniform1f(const GLchar * name, GLfloat v0)
+{
+	glUniform1f(glGetUniformLocation(this->_shaderProgram, name), v0);
+}
+
 void ZShader::setUniform3f(const GLchar * name, GLfloat v0, GLfloat v1, GLfloat v2)
 {
 	glUniform3f(glGetUniformLocation(this->_shaderProgram, name), v0, v1, v2);

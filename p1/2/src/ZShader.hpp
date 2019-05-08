@@ -14,6 +14,7 @@ public:
 	void use();
 	unsigned int getShader();
 	void setUniform1i(const GLchar *name, GLint v0);
+	void setUniform1f(const GLchar *name, GLfloat v0);
 	void setUniform3f(const GLchar *name, GLfloat v0, GLfloat v1, GLfloat v2);
 	void setUniformMatrix4fv(const GLchar *name, GLsizei count, GLboolean transpose, const GLfloat *value);
 

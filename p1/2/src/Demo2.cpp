@@ -21,7 +21,7 @@ Demo2::Demo2()
 	sprite2->loadTexture(".\\texture\\demo2.png");
 	node->addChild(sprite2);
 
-	Scene* scene = new Scene();
+	BaseScene* scene = new BaseScene();
 	scene->addChild(node);
 	Engine::getInstance()->addScene(scene);
 
