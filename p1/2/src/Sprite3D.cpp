@@ -2,7 +2,18 @@
 
 Sprite3D::Sprite3D()
 {
-	_material = new Material(".\\shader\\d3vs.txt", ".\\shader\\d3fs.txt");
+	_material = new Material(".\\shader\\modelvs.txt", ".\\shader\\modelfs.txt");
+
+	Assimp::Importer importer;
+	const aiScene *scene = importer.ReadFile(".\\model\\d.fbx", aiProcess_Triangulate | aiProcess_FlipUVs);
+
+	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+	{
+		cout << "ERROR::ASSIMP::" << importer.GetErrorString() << endl;
+	}
+
+	processNode(scene->mRootNode, scene);
+	cout << "加载模型完成::" << endl;
 }
 
 void Sprite3D::loadTexture(const char * url)
@@ -22,14 +33,26 @@ void Sprite3D::onRender(Camera* camera)
 	// 使用shader
 	this->_material->getShader()->use();
 
+	for (vector<Mesh>::iterator it = this->meshes.begin(); it != this->meshes.end(); ++it)
+	{
+		this->renderSingleMesh(camera, *it);
+	}
+	
+	Node::onRender(camera);
+}
+
+void Sprite3D::renderSingleMesh(Camera* camera, Mesh mesh)
+{
 	// 根据实时位置生成顶点 并提交
-	this->createVBO();
+	this->createVBO(mesh);
+	this->createEBO(mesh);
 	this->createVAO();
 	glBindVertexArray(this->_vao);
 
 	// 模型矩阵
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::rotate(model, glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+	//model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
 	this->_material->getShader()->setUniformMatrix4fv("model", 1, GL_FALSE, glm::value_ptr(model));
 
 	// 观察矩阵
@@ -40,17 +63,17 @@ void Sprite3D::onRender(Camera* camera)
 
 	// 投影矩阵
 	glm::mat4 projection = glm::mat4(1.0f);
-	projection = glm::perspective(glm::radians(45.0f), (float)480 / 320, 0.1f, 100.0f);
+	projection = glm::perspective(glm::radians(45.0f), (float)480 / 320, 0.1f, 1000.0f);
 	this->_material->getShader()->setUniformMatrix4fv("projection", 1, GL_FALSE, glm::value_ptr(projection));
 
 	// base
-	this->_material->getShader()->setUniform3f("lightPos", 1.2f, 1.0f, 2.0f);
-	this->_material->getShader()->setUniform3f("viewPos", camera->transform->x, camera->transform->y, camera->transform->z);
+	//this->_material->getShader()->setUniform3f("lightPos", 1.2f, 1.0f, 2.0f);
+	//this->_material->getShader()->setUniform3f("viewPos", camera->transform->x, camera->transform->y, camera->transform->z);
 
 	// light
-	this->_material->getShader()->setUniform3f("light.ambient", 0.2f, 0.2f, 0.2f);
-	this->_material->getShader()->setUniform3f("light.diffuse", 0.8f, 0.8f, 0.8f);
-	this->_material->getShader()->setUniform3f("light.specular", 1.0f, 1.0f, 1.0f);
+	//this->_material->getShader()->setUniform3f("light.ambient", 0.2f, 0.2f, 0.2f);
+	//this->_material->getShader()->setUniform3f("light.diffuse", 0.8f, 0.8f, 0.8f);
+	//this->_material->getShader()->setUniform3f("light.specular", 1.0f, 1.0f, 1.0f);
 
 	// material
 	this->_material->getShader()->setUniform1i("material.diffuse", 0);
@@ -62,13 +85,76 @@ void Sprite3D::onRender(Camera* camera)
 
 	// 绘制
 	glDrawArrays(GL_TRIANGLES, 0, 36);
-
-	Node::onRender(camera);
+	//glDrawElements(GL_TRIANGLES, mesh.indices.size(), GL_UNSIGNED_INT, 0);
 }
 
-void Sprite3D::createVBO()
+void Sprite3D::createVBO(Mesh mesh)
 {
-	float vertices[] = {
+	unsigned int VBO;
+	glGenBuffers(1, &VBO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, mesh.vertices.size() * sizeof(Vertex), &(mesh.vertices[0]), GL_STATIC_DRAW);
+
+	this->_vbo = VBO;
+}
+
+void Sprite3D::createEBO(Mesh mesh)
+{
+	unsigned int EBO;
+	glGenBuffers(1, &EBO);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh.indices.size() * sizeof(unsigned int), &(mesh.indices[0]), GL_STATIC_DRAW);
+
+	this->_ebo = EBO;
+}
+
+void Sprite3D::createVAO()
+{
+	// 顶点数组对象 VAO
+	unsigned int VAO;
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+
+	// VBO
+	glBindBuffer(GL_ARRAY_BUFFER, this->_vbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->_ebo);
+
+	// VBO add data 顶点坐标
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	// VBO add data 法线
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
+	glEnableVertexAttribArray(1);
+
+	// VBO add data 纹理
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
+	glEnableVertexAttribArray(2);
+
+	this->_vao = VAO;
+}
+
+void Sprite3D::processNode(aiNode * node, const aiScene * scene)
+{
+	// 处理节点所有的网格（如果有的话）
+	for (unsigned int i = 0; i < node->mNumMeshes; i++)
+	{
+		aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
+		meshes.push_back(processMesh(mesh, scene));
+	}
+
+	// 接下来对它的子节点重复这一过程
+	for (unsigned int i = 0; i < node->mNumChildren; i++)
+	{
+		processNode(node->mChildren[i], scene);
+	}
+}
+
+Mesh Sprite3D::processMesh(aiMesh * mesh, const aiScene * scene)
+{
+	float verticesData[] = {
 		// positions          // normals           // texture coords
 		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
 		0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
@@ -113,41 +199,122 @@ void Sprite3D::createVBO()
 		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
 	};
 
-	// VBO
-	unsigned int VBO;
-	glGenBuffers(1, &VBO);
+	vector<Vertex> vertices;
+	vector<unsigned int> indices;
+	vector<Texture> textures;
 
-	// VBO base data
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	bool testData = true;
 
-	// dispose
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	if (testData)
+	{
+		for (int i = 0; i < 288; i += 8)
+		{
+			Vertex vertex;
 
-	this->_vbo = VBO;
+			glm::vec3 vector;
+
+			vector.x = verticesData[i];
+			vector.y = verticesData[i + 1];
+			vector.z = verticesData[i + 2];
+			vertex.Position = vector;
+
+			vector.x = verticesData[i + 3];
+			vector.y = verticesData[i + 4];
+			vector.z = verticesData[i + 5];
+			vertex.Normal = vector;
+
+			glm::vec2 vec;
+			vec.x = verticesData[i + 6];
+			vec.y = verticesData[i + 7];
+			vertex.TexCoords = vec;
+
+			vertices.push_back(vertex);
+		}
+	}
+	else
+	{
+		// 顶点数据
+		for (unsigned int i = 0; i < mesh->mNumVertices; i++)
+		{
+			Vertex vertex;
+
+			glm::vec3 vector;
+
+			// 顶点位置
+			vector.x = mesh->mVertices[i].x;
+			vector.y = mesh->mVertices[i].y;
+			vector.z = mesh->mVertices[i].z;
+			vertex.Position = vector;
+
+			// 法线
+			vector.x = mesh->mNormals[i].x;
+			vector.y = mesh->mNormals[i].y;
+			vector.z = mesh->mNormals[i].z;
+			vertex.Normal = vector;
+
+			// 纹理坐标
+			if (mesh->mTextureCoords[0]) // 网格是否有纹理坐标？
+			{
+				glm::vec2 vec;
+				vec.x = mesh->mTextureCoords[0][i].x;
+				vec.y = mesh->mTextureCoords[0][i].y;
+				vertex.TexCoords = vec;
+			}
+			else
+				vertex.TexCoords = glm::vec2(0.0f, 0.0f);
+
+			vertices.push_back(vertex);
+		}
+	}
+
+	if (testData)
+	{
+		for (int i = 1; i <= 36; i++)
+		{
+			indices.push_back(i);
+		}
+	}
+	else
+	{
+		// 索引
+		for (unsigned int i = 0; i < mesh->mNumFaces; i++)
+		{
+			aiFace face = mesh->mFaces[i];
+			for (unsigned int j = 0; j < face.mNumIndices; j++)
+				indices.push_back(face.mIndices[j]);
+		}
+
+		// 处理材质
+		if (mesh->mMaterialIndex >= 0)
+		{
+			aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
+
+			vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+
+			textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+
+			vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+
+			textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+		}
+	}
+
+	return Mesh(vertices, indices, textures);
 }
 
-void Sprite3D::createVAO()
+vector<Texture> Sprite3D::loadMaterialTextures(aiMaterial * mat, aiTextureType type, string typeName)
 {
-	// 顶点数组对象 VAO
-	unsigned int VAO;
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
+	vector<Texture> textures;
+	for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
+	{
+		aiString str;
+		mat->GetTexture(type, i, &str);
 
-	// VBO
-	glBindBuffer(GL_ARRAY_BUFFER, this->_vbo);
-
-	// VBO add data 顶点坐标
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	// VBO add data 法线
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-
-	// VBO add data 纹理
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);
-
-	this->_vao = VAO;
+		Texture texture;
+		//texture.id = TextureFromFile(str.C_Str(), directory);
+		//texture.type = typeName;
+		//texture.path = str;
+		textures.push_back(texture);
+	}
+	return textures;
 }

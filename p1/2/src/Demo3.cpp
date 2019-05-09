@@ -2,6 +2,7 @@
 
 Demo3::Demo3()
 {
+	// fragColor = vec4(result, 1.0);
 	Engine::getInstance()->init(480, 320);
 
 	Node* node = new Node();
@@ -14,11 +15,11 @@ Demo3::Demo3()
 	sprite->loadTexture(".\\texture\\container2.png");
 	node->addChild(sprite);
 
-	/*Sprite* sprite2 = new Sprite();
-	sprite2->setName("sprite2");
-	sprite2->setX(100);
-	sprite2->setY(-100);
-	sprite2->loadTexture(".\\texture\\demo2.png");
+	/*Sprite3D* sprite2 = new Sprite3D();
+	sprite2->setName("sprite3d2");
+	sprite2->setX(50);
+	sprite2->setY(-50);
+	sprite2->loadTexture(".\\texture\\container2.png");
 	node->addChild(sprite2);*/
 
 	Scene3D* scene = new Scene3D();
@@ -27,8 +28,8 @@ Demo3::Demo3()
 
 	Camera* camera = new Camera();
 	camera->setName("camera");
-	camera->transform->x = 1.0f;
-	camera->transform->y = 1.0f;
+	camera->transform->x = 0.0f;
+	camera->transform->y = 0.0f;
 	camera->transform->z = 5.0f;
 	scene->setCamera(camera);
 
