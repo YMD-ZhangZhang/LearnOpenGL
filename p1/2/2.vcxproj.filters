@@ -134,6 +134,9 @@
     <ClCompile Include="src\core\Mesh.cpp">
       <Filter>源文件\core</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\MeshRenderer.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stb_image.h">
@@ -194,6 +197,9 @@
       <Filter>头文件\core</Filter>
     </ClInclude>
     <ClInclude Include="src\core\Mesh.h">
+      <Filter>头文件\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\MeshRenderer.h">
       <Filter>头文件\core</Filter>
     </ClInclude>
   </ItemGroup>

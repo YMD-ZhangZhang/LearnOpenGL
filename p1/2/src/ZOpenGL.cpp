@@ -27,22 +27,5 @@ void ZOpenGL::init(IRenderLoop* iRenderLoop, int width, int height)
 		return;
 	}
 
-	glEnable(GL_DEPTH_TEST);
 	iRenderLoop->setGLFWwindow(window);
-
-	/*
-	// 循环
-	while (!glfwWindowShouldClose(window))
-	{
-		iRenderLoop->onRenderLoop(window);
-
-		// 交换缓冲区
-		glfwSwapBuffers(window);
-
-		// 事件
-		glfwPollEvents();
-	}
-
-	glfwTerminate();
-	*/
 }
