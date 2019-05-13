@@ -17,7 +17,7 @@ void Sprite3D::loadTexture(const char * url)
 
 void Sprite3D::onRender(Camera* camera)
 {
-	_meshRenderer->onRender(camera);
+	_meshRenderer->onRender(camera, transform);
 	Node::onRender(camera);
 }
 

@@ -14,18 +14,42 @@ Demo3::Demo3()
 	sprite->setY(-50);
 	sprite->loadTexture(".\\texture\\container2.png");
 
+	sprite->transform->localScale.x = 0.5f;
+	sprite->transform->localScale.y = 0.5f;
+	sprite->transform->localScale.z = 0.5f;
+
+	sprite->transform->localPosition.x = 1.0f;
+	sprite->transform->localPosition.y = 0.0f;
+	sprite->transform->localPosition.z = 0.0f;
+
+	sprite->transform->localRotationEuler.x = 0.0f;
+	sprite->transform->localRotationEuler.y = 0.0f;
+	sprite->transform->localRotationEuler.z = 0.0f;
+
 	sprite->getMeshRenderer()->addMesh(Mesh::createCube());
 	node->addChild(sprite);
 
 	// sprite2
-	Sprite3D* sprite2 = new Sprite3D();
-	sprite2->setName("sprite3d");
-	sprite2->setX(50);
-	sprite2->setY(-50);
-	sprite2->loadTexture(".\\texture\\demo2.png");
+	sprite = new Sprite3D();
+	sprite->setName("sprite3d");
+	sprite->setX(50);
+	sprite->setY(-50);
+	sprite->loadTexture(".\\texture\\container2.png");
 
-	sprite2->getMeshRenderer()->addMesh(Mesh::createQuad());
-	node->addChild(sprite2);
+	sprite->transform->localScale.x = 0.5f;
+	sprite->transform->localScale.y = 0.5f;
+	sprite->transform->localScale.z = 0.5f;
+
+	sprite->transform->localPosition.x = -1.0f;
+	sprite->transform->localPosition.y = 1.0f;
+	sprite->transform->localPosition.z = 0.0f;
+
+	sprite->transform->localRotationEuler.x = 0.0f;
+	sprite->transform->localRotationEuler.y = 0.0f;
+	sprite->transform->localRotationEuler.z = 0.0f;
+
+	sprite->getMeshRenderer()->addMesh(Mesh::createCube());
+	node->addChild(sprite);
 
 	// scene
 	Scene3D* scene = new Scene3D();
@@ -34,9 +58,9 @@ Demo3::Demo3()
 
 	Camera* camera = new Camera();
 	camera->setName("camera");
-	camera->transform->x = 0.0f;
-	camera->transform->y = 0.0f;
-	camera->transform->z = 5.0f;
+	camera->transform->localPosition.x = 0.0f;
+	camera->transform->localPosition.y = 1.0f;
+	camera->transform->localPosition.z = 5.0f;
 	scene->setCamera(camera);
 
 	Engine::getInstance()->beginRenderLoop();

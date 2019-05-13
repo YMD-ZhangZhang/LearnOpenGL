@@ -8,7 +8,7 @@ MeshRenderer::MeshRenderer()
 	//loadDefaultMesh();
 }
 
-void MeshRenderer::onRender(Camera * camera)
+void MeshRenderer::onRender(Camera * camera, Transform* transform)
 {
 	// 使用shader
 	_material->getShader()->use();
@@ -16,7 +16,7 @@ void MeshRenderer::onRender(Camera * camera)
 
 	for (vector<Mesh>::iterator it = this->meshes.begin(); it != this->meshes.end(); ++it)
 	{
-		this->renderSingleMesh(camera, *it);
+		this->renderSingleMesh(camera, *it, transform);
 	}
 }
 
@@ -44,7 +44,7 @@ void MeshRenderer::loadDefaultMesh()
 	cout << "加载模型完成::" << endl;
 }
 
-void MeshRenderer::renderSingleMesh(Camera * camera, Mesh mesh)
+void MeshRenderer::renderSingleMesh(Camera * camera, Mesh mesh, Transform* transform)
 {
 	// 根据实时位置生成顶点 并提交
 	this->createVBO(mesh);
@@ -54,14 +54,17 @@ void MeshRenderer::renderSingleMesh(Camera * camera, Mesh mesh)
 
 	// 模型矩阵
 	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::rotate(model, glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-	//model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+	model = glm::scale(model, transform->localScale);
+	model = glm::translate(model, transform->localPosition);
+	model = glm::rotate(model, glm::radians(transform->localRotationEuler.x), glm::vec3(1.0f, 0.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(transform->localRotationEuler.y), glm::vec3(0.0f, 1.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(transform->localRotationEuler.z), glm::vec3(0.0f, 0.0f, 1.0f));
 	this->_material->getShader()->setUniformMatrix4fv("model", 1, GL_FALSE, glm::value_ptr(model));
 
 	// 观察矩阵
 	glm::mat4 view = glm::mat4(1.0f);
 	//view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-	view = glm::translate(view, glm::vec3(-camera->transform->x, -camera->transform->y, -camera->transform->z));
+	view = glm::translate(view, glm::vec3(-camera->transform->localPosition.x, -camera->transform->localPosition.y, -camera->transform->localPosition.z));
 	this->_material->getShader()->setUniformMatrix4fv("view", 1, GL_FALSE, glm::value_ptr(view));
 
 	// 投影矩阵

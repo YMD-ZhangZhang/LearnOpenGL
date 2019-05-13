@@ -1,8 +1,8 @@
 #include "Transform.h"
 
-Transform::Transform(float x, float y, float z)
+Transform::Transform()
 {
-	this->x = x;
-	this->y = y;
-	this->z = z;
+	localPosition = glm::vec3(0.0f);
+	localScale = glm::vec3(1.0f);
+	localRotationEuler = glm::vec3(0.0f);
 }

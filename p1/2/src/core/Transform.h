@@ -1,12 +1,16 @@
 #pragma once
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 class Transform
 {
 public:
-	Transform(float x, float y, float z);
+	Transform();
 
 public:
-	float x;
-	float y;
-	float z;
+	glm::vec3 localPosition;
+	glm::vec3 localScale;
+	glm::vec3 localRotationEuler;
 };

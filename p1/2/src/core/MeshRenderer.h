@@ -16,12 +16,12 @@ class MeshRenderer
 public:
 	MeshRenderer();
 	void loadDefaultMesh();
-	void onRender(Camera* camera);
+	void onRender(Camera* camera, Transform* transform);
 	Material* getMaterial();
 	void addMesh(Mesh mesh);
 
 private:
-	void renderSingleMesh(Camera* camera, Mesh mesh);
+	void renderSingleMesh(Camera* camera, Mesh mesh, Transform* transform);
 	void createVBO(Mesh mesh);
 	void createEBO(Mesh mesh);
 	void createVAO();
