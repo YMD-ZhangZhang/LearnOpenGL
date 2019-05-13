@@ -13,6 +13,7 @@ public:
 	Sprite3D();
 	void loadTexture(const char* url);
 	virtual void onRender(Camera* camera);
+	MeshRenderer* getMeshRenderer();
 
 private:
 	Texture2D* _texture;

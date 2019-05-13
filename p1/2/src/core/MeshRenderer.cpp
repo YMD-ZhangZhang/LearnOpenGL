@@ -5,17 +5,7 @@ MeshRenderer::MeshRenderer()
 	_material = new Material(".\\shader\\modelvs.txt", ".\\shader\\modelfs.txt");
 	_material->setDepthTest(true);
 	_material->setDepthTestFunc(GL_LESS);
-
-	Assimp::Importer importer;
-	const aiScene *scene = importer.ReadFile(".\\model\\d.fbx", aiProcess_Triangulate | aiProcess_FlipUVs);
-
-	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
-	{
-		cout << "ERROR::ASSIMP::" << importer.GetErrorString() << endl;
-	}
-
-	processNode(scene->mRootNode, scene);
-	cout << "加载模型完成::" << endl;
+	//loadDefaultMesh();
 }
 
 void MeshRenderer::onRender(Camera * camera)
@@ -33,6 +23,25 @@ void MeshRenderer::onRender(Camera * camera)
 Material * MeshRenderer::getMaterial()
 {
 	return _material;
+}
+
+void MeshRenderer::addMesh(Mesh mesh)
+{
+	meshes.push_back(mesh);
+}
+
+void MeshRenderer::loadDefaultMesh()
+{
+	Assimp::Importer importer;
+	const aiScene *scene = importer.ReadFile(".\\model\\d.fbx", aiProcess_Triangulate | aiProcess_FlipUVs);
+
+	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+	{
+		cout << "ERROR::ASSIMP::" << importer.GetErrorString() << endl;
+	}
+
+	processNode(scene->mRootNode, scene);
+	cout << "加载模型完成::" << endl;
 }
 
 void MeshRenderer::renderSingleMesh(Camera * camera, Mesh mesh)
@@ -148,149 +157,63 @@ void MeshRenderer::processNode(aiNode * node, const aiScene * scene)
 
 Mesh MeshRenderer::processMesh(aiMesh * mesh, const aiScene * scene)
 {
-	float verticesData[] = {
-		// positions          // normals           // texture coords
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
-		0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
-		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
-		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
-
-		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
-		0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 0.0f,
-		0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
-		0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
-
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-
-		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-		0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
-		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-		0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
-		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
-		0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f,
-		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
-		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
-
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f,
-		0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f,
-		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
-		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
-	};
-
 	vector<Vertex> vertices;
 	vector<unsigned int> indices;
 	vector<Texture> textures;
 
-	bool testData = true;
-
-	if (testData)
+	// 顶点数据
+	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 	{
-		for (int i = 0; i < 288; i += 8)
+		Vertex vertex;
+
+		glm::vec3 vector;
+
+		// 顶点位置
+		vector.x = mesh->mVertices[i].x;
+		vector.y = mesh->mVertices[i].y;
+		vector.z = mesh->mVertices[i].z;
+		vertex.Position = vector;
+
+		// 法线
+		vector.x = mesh->mNormals[i].x;
+		vector.y = mesh->mNormals[i].y;
+		vector.z = mesh->mNormals[i].z;
+		vertex.Normal = vector;
+
+		// 纹理坐标
+		if (mesh->mTextureCoords[0]) // 网格是否有纹理坐标？
 		{
-			Vertex vertex;
-
-			glm::vec3 vector;
-
-			vector.x = verticesData[i];
-			vector.y = verticesData[i + 1];
-			vector.z = verticesData[i + 2];
-			vertex.Position = vector;
-
-			vector.x = verticesData[i + 3];
-			vector.y = verticesData[i + 4];
-			vector.z = verticesData[i + 5];
-			vertex.Normal = vector;
-
 			glm::vec2 vec;
-			vec.x = verticesData[i + 6];
-			vec.y = verticesData[i + 7];
+			vec.x = mesh->mTextureCoords[0][i].x;
+			vec.y = mesh->mTextureCoords[0][i].y;
 			vertex.TexCoords = vec;
-
-			vertices.push_back(vertex);
 		}
-	}
-	else
-	{
-		// 顶点数据
-		for (unsigned int i = 0; i < mesh->mNumVertices; i++)
-		{
-			Vertex vertex;
+		else
+			vertex.TexCoords = glm::vec2(0.0f, 0.0f);
 
-			glm::vec3 vector;
-
-			// 顶点位置
-			vector.x = mesh->mVertices[i].x;
-			vector.y = mesh->mVertices[i].y;
-			vector.z = mesh->mVertices[i].z;
-			vertex.Position = vector;
-
-			// 法线
-			vector.x = mesh->mNormals[i].x;
-			vector.y = mesh->mNormals[i].y;
-			vector.z = mesh->mNormals[i].z;
-			vertex.Normal = vector;
-
-			// 纹理坐标
-			if (mesh->mTextureCoords[0]) // 网格是否有纹理坐标？
-			{
-				glm::vec2 vec;
-				vec.x = mesh->mTextureCoords[0][i].x;
-				vec.y = mesh->mTextureCoords[0][i].y;
-				vertex.TexCoords = vec;
-			}
-			else
-				vertex.TexCoords = glm::vec2(0.0f, 0.0f);
-
-			vertices.push_back(vertex);
-		}
+		vertices.push_back(vertex);
 	}
 
-	if (testData)
+	// 索引
+	for (unsigned int i = 0; i < mesh->mNumFaces; i++)
 	{
-		for (int i = 1; i <= 36; i++)
-		{
-			indices.push_back(i);
-		}
+		aiFace face = mesh->mFaces[i];
+		for (unsigned int j = 0; j < face.mNumIndices; j++)
+			indices.push_back(face.mIndices[j]);
 	}
-	else
+
+	// 处理材质
+	if (mesh->mMaterialIndex >= 0)
 	{
-		// 索引
-		for (unsigned int i = 0; i < mesh->mNumFaces; i++)
-		{
-			aiFace face = mesh->mFaces[i];
-			for (unsigned int j = 0; j < face.mNumIndices; j++)
-				indices.push_back(face.mIndices[j]);
-		}
+		aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
 
-		// 处理材质
-		if (mesh->mMaterialIndex >= 0)
-		{
-			aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
+		vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
 
-			vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
-			textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+		vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
 
-			vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
-
-			textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-		}
+		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 	}
 
 	return Mesh(vertices, indices, textures);

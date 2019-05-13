@@ -14,5 +14,7 @@ uniform Material material;
 void main()
 {
 	vec3 ambient = vec3(texture(material.diffuse, TexCoords));
+	if (ambient.r < 0.1)
+		discard;
 	fragColor = vec4(ambient, 1.0);
 }

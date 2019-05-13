@@ -29,7 +29,10 @@ uniform Light light;
 
 void main()
 {
-	vec3 ambient = light.ambient * vec3(texture(material.diffuse, TexCoords));
+	vec3 texColor = vec3(texture(material.diffuse, TexCoords));
+	if (texColor.a <= 0.1)
+		discard;
+	vec3 ambient = light.ambient * texColor;
 
 	vec3 norm = normalize(Normal);
 	vec3 lightDir = normalize(lightPos - FragPos);

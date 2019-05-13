@@ -24,6 +24,8 @@ class Mesh
 {
 public:
 	Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures);
+	static Mesh createQuad();
+	static Mesh createCube();
 
 public:
 	vector<Vertex> vertices;

@@ -3,6 +3,7 @@
 Sprite3D::Sprite3D()
 {
 	_meshRenderer = new MeshRenderer();
+	//_meshRenderer->loadDefaultMesh();
 }
 
 void Sprite3D::loadTexture(const char * url)
@@ -18,4 +19,9 @@ void Sprite3D::onRender(Camera* camera)
 {
 	_meshRenderer->onRender(camera);
 	Node::onRender(camera);
+}
+
+MeshRenderer * Sprite3D::getMeshRenderer()
+{
+	return _meshRenderer;
 }

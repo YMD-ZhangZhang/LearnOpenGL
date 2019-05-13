@@ -15,8 +15,10 @@ class MeshRenderer
 {
 public:
 	MeshRenderer();
+	void loadDefaultMesh();
 	void onRender(Camera* camera);
 	Material* getMaterial();
+	void addMesh(Mesh mesh);
 
 private:
 	void renderSingleMesh(Camera* camera, Mesh mesh);
